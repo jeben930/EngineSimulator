@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "App.h"
+#include "EngineSimulatorMain.h"
 
 #include <ppltasks.h>
+
 
 using namespace EngineSimulator;
 
@@ -84,6 +86,10 @@ void App::Load(Platform::String^ entryPoint)
 	if (m_main == nullptr)
 	{
 		m_main = std::unique_ptr<EngineSimulatorMain>(new EngineSimulatorMain());
+	}
+	else
+	{
+		m_main = std::move(std::unique_ptr<EngineSimulatorMain>(new EngineSimulatorMain()));
 	}
 }
 
