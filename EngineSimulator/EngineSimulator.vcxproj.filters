@@ -67,11 +67,17 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="EngineSimulatorMain.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="CMBDataset.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="UniverseSimulator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="EngineSimulatorMain.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CMBDataset.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="UniverseSimulator.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

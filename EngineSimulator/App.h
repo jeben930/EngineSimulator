@@ -1,16 +1,26 @@
 ﻿#pragma once
 
 #include "pch.h"
+
+#include <memory>
+
+#include "EngineSimulatorMain.h"
+#include "Sample3DSceneRenderer.h"
+
+#include "winrt/Windows.ApplicationModel.Activation.h"
+#include "winrt/Windows.UI.Core.h"
+
 #include "Common\DirectXHelper.h"
 #include "Common\DeviceResources.h"
-#include "EngineSimulatorMain.h"
+
 #include <Windows.h>
 #include <concrt.h>
 #include <ppltasks.h>
-#include <memory>
+
 #include <string>
 #include <sstream>
 #include <stdexcept>
+
 #include <wrl.h>
 #include <Windows.ApplicationModel.Activation.h>
 

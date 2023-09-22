@@ -4,58 +4,58 @@
 using namespace EngineSimulator;
 
 EngineSimulatorMain::EngineSimulatorMain() :
-    m_deviceResources(std::make_shared<DX::DeviceResources>())
+    m_windowClosed(false),
+    m_windowVisible(true),
+    m_engineSimulator()
 {
-    m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 60);
-
-    m_sceneRenderer = std::make_unique<Sample3DSceneRenderer>(m_deviceResources);
 }
 
-void EngineSimulatorMain::OnWindowSizeChanged(int width, int height)
+void EngineSimulatorMain::Initialize(HWND window, int width, int height)
 {
-    m_deviceResources->SetLogicalSize(Windows::Foundation::Size(static_cast<float>(width), static_cast<float>(height)));
-    m_sceneRenderer->CreateWindowSizeDependentResources();
+    m_engineSimulator.Initialize();
 }
 
 void EngineSimulatorMain::Update()
 {
-    m_timer.Tick([&]()
-        {
-            // Update scene objects.
-            m_sceneRenderer->Update(m_timer);
-        });
+    // Update the engine simulator with the current time
+    float currentTime = static_cast<float>(m_timer.GetTotalSeconds());
+    m_engineSimulator.Update();
 }
 
-
-bool EngineSimulatorMain::Render()
+void EngineSimulatorMain::SetWindowVisible(bool visible)
 {
-    // Don't try to render anything before the first Update.
-    if (m_timer.GetFrameCount() == 0)
+    m_windowVisible = visible;
+}
+
+void EngineSimulatorMain::SetWindowClosed()
+{
+    m_windowClosed = true;
+}
+
+bool EngineSimulatorMain::IsWindowClosed()
+{
+    return m_windowClosed;
+}
+
+bool EngineSimulatorMain::IsWindowVisible()
+{
+    return m_windowVisible;
+}
+
+void EngineSimulatorMain::StartRenderLoop()
+{
+    while (!m_windowClosed)
     {
-        return false;
+        if (m_windowVisible)
+        {
+            m_timer.Tick([&]()
+                {
+                    Update();
+                });
+        }
+        else
+        {
+            Sleep(100);
+        }
     }
-
-    // Render the scene.
-    m_sceneRenderer->Render();
-
-    // Present the frame.
-    m_deviceResources->Present();
-
-    return true;
-}
-
-void EngineSimulatorMain::OnSuspending()
-{
-}
-
-void EngineSimulatorMain::OnDeviceRemoved()
-{
-    m_sceneRenderer->ReleaseDeviceDependentResources();
-}
-
-
-void EngineSimulatorMain::CreateWindowSizeDependentResources()
-{
-    m_sceneRenderer->CreateWindowSizeDependentResources();
 }

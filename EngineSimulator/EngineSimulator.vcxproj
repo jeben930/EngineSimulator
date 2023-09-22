@@ -248,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="CMBDataset.h" />
     <ClInclude Include="Common\d3dx12.h" />
     <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="EngineSimulatorMain.h" />
@@ -255,10 +256,13 @@
     <ClInclude Include="Common\StepTimer.h" />
     <ClInclude Include="Content\Sample3DSceneRenderer.h" />
     <ClInclude Include="Content\ShaderStructures.h" />
+    <ClInclude Include="Header.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="UniverseSimulator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="CMBDataset.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
     <ClCompile Include="EngineSimulatorMain.cpp" />
     <ClCompile Include="Content\Sample3DSceneRenderer.cpp" />
@@ -272,6 +276,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="UniverseSimulator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

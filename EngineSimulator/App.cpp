@@ -1,92 +1,60 @@
 #include "pch.h"
 #include "App.h"
-#include "Common\DirectXHelper.h"
+#include "EngineSimulatorMain.h"
+#include "Sample3DSceneRenderer.h"
+
+using namespace Windows::ApplicationModel;
+using namespace Windows::ApplicationModel::Activation;
+using namespace Windows::UI::Core;
+using namespace Windows::UI::Xaml::Controls;
+using namespace Windows::UI::Xaml::Navigation;
 
 using namespace EngineSimulator;
-using namespace Windows::Foundation;
-using namespace Windows::System::Threading;
-using namespace Concurrency;
-using namespace Windows::UI::Core;
-using namespace Windows::ApplicationModel::Activation;
 
-// Loads and initializes application assets when the application is loaded.
-App::App() :
-    m_windowClosed(false),
-    m_windowVisible(true),
-    m_engine(std::make_unique<EngineSimulatorMain>())
+App::App()
 {
+    m_main = std::make_unique<EngineSimulatorMain>();
 }
 
-// Creates and initializes the window when the application is launched.
 void App::OnLaunched(LaunchActivatedEventArgs^ args)
 {
-    // Create a window.
-    auto window = CoreWindow::GetForCurrentThread();
+    UNREFERENCED_PARAMETER(args);
 
-    // Register event handlers for app lifecycle.
-    window->Activated += ref new TypedEventHandler<CoreWindow^, WindowActivatedEventArgs^>(this, &App::OnActivated);
-    window->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &App::OnWindowSizeChanged);
-    window->VisibilityChanged += ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &App::OnVisibilityChanged);
-    window->Closed += ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &App::OnWindowClosed);
-
-    // Initialize the sample renderer.
-    m_engine->CreateRenderers();
-    m_engine->OnWindowSizeChanged(window->Bounds.Width, window->Bounds.Height);
-
-    // Enter the render loop.
-    while (!m_windowClosed)
+    if (m_window == nullptr)
     {
-        if (m_windowVisible)
-        {
-            window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
-
-            m_engine->Update();
-            if (m_engine->Render())
-            {
-                m_deviceResources->Present();
-            }
-        }
-        else
-        {
-            window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessOneAndAllPending);
-        }
+        m_window = ref new Windows::UI::Core::CoreWindow();
+        m_window->VisibilityChanged +=
+            ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &App::OnVisibilityChanged);
+        m_window->Closed +=
+            ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &App::OnWindowClosed);
+        m_window->Activate();
     }
+
+    auto deviceResources = std::make_shared<DX::DeviceResources>();
+    auto sceneRenderer = std::make_unique<Sample3DSceneRenderer>(deviceResources);
+    m_main->StartRenderLoop(m_window, deviceResources, std::move(sceneRenderer));
 }
 
-// Called when the window size changes.
-void App::OnWindowSizeChanged(CoreWindow^ sender, WindowSizeChangedEventArgs^ args)
+void App::OnActivated(CoreWindow^ window, WindowActivatedEventArgs^ args)
 {
-    m_engine->OnWindowSizeChanged(args->Size.Width, args->Size.Height);
+    UNREFERENCED_PARAMETER(args);
+
+    auto deviceResources = std::make_shared<DX::DeviceResources>();
+    auto sceneRenderer = std::make_unique<Sample3DSceneRenderer>(deviceResources);
+    m_main->StartRenderLoop(window, deviceResources, std::move(sceneRenderer));
 }
 
-// Called when the app is activated.
-void App::OnActivated(CoreWindow^ sender, WindowActivatedEventArgs^ args)
+void App::OnVisibilityChanged(CoreWindow^ window, VisibilityChangedEventArgs^ args)
 {
-    m_engine->OnResuming();
+    m_main->SetWindowVisible(args->Visible);
 }
 
-// Called when the app is resumed.
-void App::OnResuming(Object^ sender, Object^ args)
+void App::OnWindowClosed(CoreWindow^ window, CoreWindowEventArgs^ args)
 {
-    m_engine->OnResuming();
+    m_main->SetWindowClosed();
 }
 
-// Called when the app window is closed.
-void App::OnWindowClosed(CoreWindow^ sender, CoreWindowEventArgs^ args)
+void App::Run()
 {
-    m_windowClosed = true;
-}
-
-// Called when the app window visibility changes.
-void App::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
-{
-    m_windowVisible = args->Visible;
-    if (m_windowVisible)
-    {
-        m_engine->OnResuming();
-    }
-    else
-    {
-        m_engine->OnSuspending();
-    }
+    CoreApplication::Run(ref new App());
 }

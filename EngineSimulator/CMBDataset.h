@@ -14,7 +14,7 @@ const float G = 6.67430e-11f; // Gravitational constant
 class CMBDataset {
 public:
     CMBDataset();
-    void initialize();
+    void initialize(float inflation, float dark_matter, float dark_energy);
     void calculate_forces();
     void update_grid();
 

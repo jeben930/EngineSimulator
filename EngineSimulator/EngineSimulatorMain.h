@@ -1,8 +1,9 @@
 ﻿#pragma once
 
 #include "DeviceResources.h"
-#include "StepTimer.h"
 #include "Sample3DSceneRenderer.h"
+#include "CMBDataset.h"
+#include "UniverseSimulator.h"
 
 namespace EngineSimulator
 {
@@ -10,19 +11,20 @@ namespace EngineSimulator
     {
     public:
         EngineSimulatorMain();
-        void CreateRenderers();
-        void OnWindowSizeChanged(int width, int height);
+
+        void Initialize(HWND window, int width, int height);
         void Update();
-        bool Render();
-        void OnSuspending();
-        void OnResuming();
-        void OnDeviceRemoved();
-        void CreateWindowSizeDependentResources();
+        void SetWindowVisible(bool visible);
+        void SetWindowClosed();
+        bool IsWindowClosed();
+        bool IsWindowVisible();
+        void StartRenderLoop();
 
     private:
-        std::shared_ptr<DX::DeviceResources> m_deviceResources;
-        std::unique_ptr<Sample3DSceneRenderer> m_sceneRenderer;
         DX::StepTimer m_timer;
+        bool m_windowClosed;
+        bool m_windowVisible;
+        CMBDataset m_cmbDataset;
+        UniverseSimulator m_engineSimulator;
     };
-    
 }
