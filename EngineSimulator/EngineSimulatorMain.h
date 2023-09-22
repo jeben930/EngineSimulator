@@ -1,22 +1,26 @@
 ﻿#pragma once
 
-#include <Windows.h>
+#include "DeviceResources.h"
+#include "StepTimer.h"
+#include "Sample3DSceneRenderer.h"
 
-namespace EngineSimulator {
-    class EngineSimulatorMain {
+namespace EngineSimulator
+{
+    class EngineSimulatorMain
+    {
     public:
-        EngineSimulatorMain(HWND hwnd);
-        void run();
+        EngineSimulatorMain();
+        void CreateRenderers();
+        void OnWindowSizeChanged(int width, int height);
+        void Update();
+        bool Render();
+        void OnSuspending();
+        void OnResuming();
+        void OnDeviceRemoved();
 
     private:
-        void initialize();
-        void update();
-        void render();
-        void calculate_forces();
-        void update_grid();
-
-        HWND m_hwnd;
-        // TODO: Add DirectX 12 device and resource variables
-        // TODO: Add dataset variables
+        std::shared_ptr<DX::DeviceResources> m_deviceResources;
+        std::unique_ptr<Sample3DSceneRenderer> m_sceneRenderer;
+        DX::StepTimer m_timer;
     };
 }

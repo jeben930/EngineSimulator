@@ -6,6 +6,11 @@
 #include "StepTimer.h"
 #include "CMBDataset.h"
 
+#include <DirectXMath.h>
+#include <DirectXColors.h>
+#include <PrimitiveBatch.h>
+#include <VertexTypes.h>
+
 namespace EngineSimulator
 {
     // Renders the scene using the DirectX 12 API.
