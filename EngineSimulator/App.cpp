@@ -7,6 +7,7 @@ using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;
 using namespace Windows::UI::Core;
+using namespace Windows::ApplicationModel::Activation;
 
 // Loads and initializes application assets when the application is loaded.
 App::App() :
@@ -17,7 +18,7 @@ App::App() :
 }
 
 // Creates and initializes the window when the application is launched.
-void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ args)
+void App::OnLaunched(LaunchActivatedEventArgs^ args)
 {
     // Create a window.
     auto window = CoreWindow::GetForCurrentThread();
@@ -42,7 +43,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
             m_engine->Update();
             if (m_engine->Render())
             {
-                m_engine->Present();
+                m_deviceResources->Present();
             }
         }
         else
@@ -64,14 +65,8 @@ void App::OnActivated(CoreWindow^ sender, WindowActivatedEventArgs^ args)
     m_engine->OnResuming();
 }
 
-// Called when the app is suspended.
-void App::OnSuspending(Platform::Object^ sender, SuspendingEventArgs^ args)
-{
-    m_engine->OnSuspending();
-}
-
 // Called when the app is resumed.
-void App::OnResuming(Platform::Object^ sender, Platform::Object^ args)
+void App::OnResuming(Object^ sender, Object^ args)
 {
     m_engine->OnResuming();
 }

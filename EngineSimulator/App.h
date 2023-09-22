@@ -1,8 +1,18 @@
 ﻿#pragma once
 
 #include "pch.h"
+#include "Common\DirectXHelper.h"
 #include "Common\DeviceResources.h"
 #include "EngineSimulatorMain.h"
+#include <Windows.h>
+#include <concrt.h>
+#include <ppltasks.h>
+#include <memory>
+#include <string>
+#include <sstream>
+#include <stdexcept>
+#include <wrl.h>
+#include <Windows.ApplicationModel.Activation.h>
 
 namespace EngineSimulator
 {
@@ -13,6 +23,7 @@ namespace EngineSimulator
 		App();
 
 		// IFrameworkView methods.
+		virtual void OnLaunched(LaunchActivatedEventArgs^ args) override;
 		virtual void Initialize(Windows::ApplicationModel::Core::CoreApplicationView^ applicationView);
 		virtual void SetWindow(Windows::UI::Core::CoreWindow^ window);
 		virtual void Load(Platform::String^ entryPoint);
@@ -21,8 +32,7 @@ namespace EngineSimulator
 
 	protected:
 		// Application lifecycle event handlers.
-		void OnActivated(Windows::ApplicationModel::Core::CoreApplicationView^ applicationView, Windows::ApplicationModel::Activation::IActivatedEventArgs^ args);
-		void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ args);
+		void OnActivated(CoreWindow^ sender, WindowActivatedEventArgs^ args) override;
 		void OnResuming(Platform::Object^ sender, Platform::Object^ args);
 
 		// Window event handlers.
@@ -39,6 +49,7 @@ namespace EngineSimulator
 		// Private accessor for m_deviceResources, protects against device removed errors.
 		std::shared_ptr<DX::DeviceResources> GetDeviceResources();
 
+		std::unique_ptr<EngineSimulatorMain> m_engine;
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 		std::unique_ptr<EngineSimulatorMain> m_main;
 		bool m_windowClosed;

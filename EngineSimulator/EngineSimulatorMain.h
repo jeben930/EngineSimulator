@@ -17,10 +17,12 @@ namespace EngineSimulator
         void OnSuspending();
         void OnResuming();
         void OnDeviceRemoved();
+        void CreateWindowSizeDependentResources();
 
     private:
         std::shared_ptr<DX::DeviceResources> m_deviceResources;
         std::unique_ptr<Sample3DSceneRenderer> m_sceneRenderer;
         DX::StepTimer m_timer;
     };
+    
 }
