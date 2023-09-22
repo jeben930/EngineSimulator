@@ -1,5 +1,15 @@
 #include "pch.h"
 #include "Sample3DSceneRenderer.h"
+#include "DirectXColors.h"
+#include "DirectXMath.h"
+#include "d3d12.h"
+#include "d3d12.h"
+#include "dxgi.h"
+#include "wrl/client.h"
+#include "d3d11.h"
+#include "d3d11_1.h"
+#include "d3d11_2.h"
+#include "d3d11_3.h"
 
 using namespace EngineSimulator;
 

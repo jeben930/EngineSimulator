@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "EngineSimulatorMain.h"
 #include "Common\DirectXHelper.h"
+#include "d3dcompiler.h"
 
 using namespace EngineSimulator;
 using namespace Windows::Foundation;
