@@ -54,11 +54,6 @@ void EngineSimulatorMain::OnDeviceRemoved()
     m_sceneRenderer->ReleaseDeviceDependentResources();
 }
 
-void EngineSimulatorMain::OnWindowSizeChanged(int width, int height)
-{
-    m_deviceResources->SetLogicalSize(Windows::Foundation::Size(static_cast<float>(width), static_cast<float>(height)));
-    CreateWindowSizeDependentResources();
-}
 
 void EngineSimulatorMain::CreateWindowSizeDependentResources()
 {

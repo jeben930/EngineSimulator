@@ -23,7 +23,7 @@ namespace EngineSimulator
 		App();
 
 		// IFrameworkView methods.
-		virtual void OnLaunched(LaunchActivatedEventArgs^ args) override;
+		virtual void OnLaunched(LaunchActivatedEventArgs^ args);
 		virtual void Initialize(Windows::ApplicationModel::Core::CoreApplicationView^ applicationView);
 		virtual void SetWindow(Windows::UI::Core::CoreWindow^ window);
 		virtual void Load(Platform::String^ entryPoint);
@@ -32,7 +32,7 @@ namespace EngineSimulator
 
 	protected:
 		// Application lifecycle event handlers.
-		void OnActivated(CoreWindow^ sender, WindowActivatedEventArgs^ args) override;
+		void OnActivated(CoreWindow^ sender, WindowActivatedEventArgs^ args);
 		void OnResuming(Platform::Object^ sender, Platform::Object^ args);
 
 		// Window event handlers.
